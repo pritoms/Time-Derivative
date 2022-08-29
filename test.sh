@@ -1,8 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -euo pipefail
+IFS=$'\n\t'
 
-time_derivatives.py time_derivatives.json /tmp/test/
-time_derivatives.py time_derivatives.json /tmp/test/
-time_derivative.py time_derivatives.json
-time_derivative.py --format html time_derivatives.json > test.html
+if [[ ! -d build ]]; then
+	echo "Directory 'build' doesn't exist, creating it..."
+	mkdir -p build
+fi
+
+echo "Running tests..."
+python3 -m unittest discover -s tests -p "*_test.py" -v
